@@ -10,6 +10,7 @@ import { open } from '@tauri-apps/plugin-dialog'
 import { readFile } from '@tauri-apps/plugin-fs'
 import { basename, resolve } from 'pathe'
 import { MemoryFileSystem } from './MemoryFileSystem'
+import { RemoteFileSystem } from './RemoteFileSystem'
 
 export function getFileSystem(): BaseFileSystem {
 	if (tauriBuild) return new TauriFileSystem()
