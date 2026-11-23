@@ -8,7 +8,7 @@ const iconPath = (filePath: string) => (isNightly ? `./img/icons/nightly/${fileP
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	base: '/',
+	base: '/bridge/',
 	server: {
 		strictPort: true,
 		port: 8080,
