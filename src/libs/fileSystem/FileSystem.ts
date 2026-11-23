@@ -13,6 +13,8 @@ import { MemoryFileSystem } from './MemoryFileSystem'
 import { RemoteFileSystem } from './RemoteFileSystem'
 
 export function getFileSystem(): BaseFileSystem {
+	if (typeof window !== 'undefined' && window.location.pathname.startsWith('/bridge')) return new RemoteFileSystem()
+
 	if (tauriBuild) return new TauriFileSystem()
 
 	if (!supportsFileSystemApi()) return new LocalFileSystem()
