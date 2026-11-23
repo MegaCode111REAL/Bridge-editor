@@ -1,4 +1,4 @@
-name: LocalDrop remote filesystem build
+name: Build LocalDrop Bridge editor
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -18,6 +18,17 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
-      - run: npm run check
-      - run: npm run build
+      - name: Install dependencies
+        run: npm ci
+      - name: Build Bridge for LocalDrop
+        run: npm run build
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+      - name: Publish static build
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: bridge-build
+          force_orphan: true
+          commit_message: "Build Bridge for LocalDrop"
