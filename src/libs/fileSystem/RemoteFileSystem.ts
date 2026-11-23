@@ -10,10 +10,17 @@ export class RemoteFileSystem extends BaseFileSystem {
   private decoder = new TextDecoder()
 
   private async request(path: string, init: RequestInit = {}): Promise<Response> {
+    const token = window.localStorage.getItem('localdrop_token_v2') || ''
+    const headers: Record<string, string> = {
+      ...(init.body instanceof Blob ? {} : { 'Content-Type': 'application/json' }),
+      ...(init.headers as Record<string, string> || {}),
+    }
+    if (token) headers.Authorization = 'Bearer ' + token
+
     const response = await fetch('/api/bridge-fs' + path, {
       credentials: 'same-origin',
       ...init,
-      headers: { ...(init.body instanceof Blob ? {} : { 'Content-Type': 'application/json' }), ...init.headers },
+      headers,
     })
     if (!response.ok) {
       let message = 'Bridge project storage request failed (' + response.status + ')'
