@@ -25,7 +25,8 @@ export class RemoteFileSystem extends BaseFileSystem {
 
   private path(path: string): string {
     const value = resolve('/', path)
-    if (value.split('/').some(part => part === '..')) throw new Error('Invalid project path')
+    const segments: string[] = value.split('/')
+    if (segments.some((part: string) => part === '..')) throw new Error('Invalid project path')
     return value
   }
 
